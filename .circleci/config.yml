@@ -1,21 +1,12 @@
 version: 2.1
 orbs:
-  win: circleci/windows@2.2.0
-executors:
-  linux:
-    docker:
-      - image: buildpack-deps:trusty
-  macos:
-    macos:
-      xcode: 11.3.0
+  python: circleci/python@1.4.0
 jobs:
   build:
     parameters:
       example:
         type: string
-      os:
-        type: executor
-    executor: << parameters.os >>
+    executor: python/default
     environment:
           PLATFORMIO_CI_SRC: << parameters.example >>
     steps:
@@ -40,8 +31,6 @@ workflows:
     jobs:
       - build:
           matrix:
-            parameters:
-              os: ["macos", "win/default", "linux"]
               example:
                 - examples/Bluetooth/PS3SPP/PS3SPP.ino
                 - examples/pl2303/pl2303_gps/pl2303_gps.ino
